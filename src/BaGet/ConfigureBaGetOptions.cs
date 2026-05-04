@@ -110,7 +110,7 @@ namespace BaGet
                     $"The '{nameof(BaGetOptions.Search)}:{nameof(SearchOptions.Type)}' config is invalid. " +
                     $"Allowed values: {string.Join(", ", ValidSearchTypes)}");
             }
-
+            
             if (failures.Any()) return ValidateOptionsResult.Fail(failures);
 
             return ValidateOptionsResult.Success;
