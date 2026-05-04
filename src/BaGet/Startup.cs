@@ -65,13 +65,26 @@ namespace BaGet
 
             // Add storage providers.
             app.AddFileStorage();
-            app.AddAliyunOssStorage();
-            app.AddAwsS3Storage();
-            app.AddAzureBlobStorage();
-            app.AddGoogleCloudStorage();
+            
+            // Only register cloud storage providers in non-development environments
+            // or when explicitly configured to avoid credential issues in local development
+            if (!IsDevelopmentEnvironment())
+            {
+                app.AddAliyunOssStorage();
+                app.AddAwsS3Storage();
+                app.AddAzureBlobStorage();
+                app.AddGoogleCloudStorage();
+            }
 
             // Add search providers.
             app.AddAzureSearch();
+        }
+
+        private bool IsDevelopmentEnvironment()
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            return string.Equals(environment, "Development", StringComparison.OrdinalIgnoreCase) ||
+                   string.IsNullOrEmpty(environment);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
